@@ -1,0 +1,73 @@
+import { NgModule, ApplicationRef } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
+import { removeNgStyles, createNewHosts, createInputTransfer } from '@angularclass/hmr';
+import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+
+@NgModule({
+  imports: [
+    BrowserModule,
+    AppRoutingModule
+  ],
+  declarations: [
+    AppComponent
+  ],
+  bootstrap: [AppComponent]
+})
+
+export class AppModule {
+  constructor(
+    public appRef: ApplicationRef
+  ) {
+    this.registerServiceWorker();
+  }
+
+  registerServiceWorker(): void {
+    if (process.env.ENV === 'production') {
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(registration => {
+            console.log('SW registered: ', registration);
+          }).catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+        });
+      }
+    }
+  }
+
+  hmrOnInit(store: any) {
+    if (!store || !store.state) return;
+    console.log('HMR store', store);
+    console.log('store.state.data:', store.state.data);
+    // inject AppStore here and update it
+    // this.AppStore.update(store.state)
+    if ('restoreInputValues' in store) {
+      store.restoreInputValues();
+    }
+    // change detection
+    this.appRef.tick();
+    delete store.state;
+    delete store.restoreInputValues;
+  }
+
+  hmrOnDestroy(store: any) {
+    var cmpLocation = this.appRef.components.map(cmp => cmp.location.nativeElement);
+    // recreate elements
+    store.disposeOldHosts = createNewHosts(cmpLocation);
+    // inject your AppStore and grab state then set it on store
+    // var appState = this.AppStore.get()
+    // store.state = Object.assign({}, appState)
+    // save input values
+    store.restoreInputValues  = createInputTransfer();
+    // remove styles
+    removeNgStyles();
+  }
+
+  hmrAfterDestroy(store: any) {
+    // display new elements
+    store.disposeOldHosts();
+    delete store.disposeOldHosts;
+    // anything you need done the component is removed
+  }
+}

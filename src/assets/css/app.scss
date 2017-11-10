@@ -1,0 +1,17 @@
+@charset 'utf-8';
+
+.main-wrapper {
+  align-items: center;
+  display: flex;
+  height: 640px;
+  justify-content: center;
+
+  div {
+    text-align: center;
+  }
+
+  img {
+    height: 378px;
+    width: 640px;
+  }
+}
