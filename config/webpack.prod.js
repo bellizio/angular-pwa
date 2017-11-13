@@ -1,10 +1,12 @@
 var webpack = require('webpack');
+var path = require('path');
 var webpackMerge = require('webpack-merge');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var ngToolsWebpack = require('@ngtools/webpack');
 var commonConfig = require('./webpack.common.js');
 var helpers = require('./helpers');
-var workboxPlugin = require('workbox-webpack-plugin');
+var WorkboxPlugin = require('workbox-webpack-plugin');
+var WebpackPwaManifest = require('webpack-pwa-manifest');
 
 const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
 
@@ -62,12 +64,39 @@ module.exports = webpackMerge(commonConfig, {
       entryModule: helpers.root('src', 'app', 'app.module#AppModule'),
       mainPath: helpers.root('src', 'main.ts')
     }),
-    new workboxPlugin({
+    new WorkboxPlugin({
       globDirectory: helpers.root('dist'),
       globPatterns: ['**/*.{html,js,css,jpg,jpeg,png}'],
       swDest: helpers.root('dist', 'sw.js'),
       clientsClaim: true,
       skipWaiting: true,
+    }),
+    new WebpackPwaManifest({
+      name: 'Angular PWA',
+      short_name: 'NG PWA',
+      description: 'An Angular PWA starter kit with Workbox',
+      background_color: '#ffffff',
+      theme_color: '#000000',
+      ios: true,
+      icons: [
+        {
+          src: helpers.root('src', 'assets', 'images', 'hover.png'),
+          sizes: [120, 152, 167, 180],
+          destination: path.join('assets', 'images', 'ios'),
+          ios: true
+        },
+        {
+          src: helpers.root('src', 'assets', 'images', 'hover.png'),
+          size: 1024,
+          destination: path.join('assets', 'images', 'ios'),
+          ios: 'startup'
+        },
+        {
+          src: helpers.root('src', 'assets', 'images', 'hover.png'),
+          sizes: [36, 48, 72, 96, 144, 192, 512],
+          destination: path.join('assets', 'images', 'android')
+        }
+      ]
     })
   ]
 });
