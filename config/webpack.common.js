@@ -38,8 +38,9 @@ module.exports = {
       name: ['app', 'vendor', 'polyfills']
     }),
     new HtmlWebpackPlugin({
-      // injects bundle into index.html, copies it to build folder
-      template: './src/index.html'
+      // injects bundles into index.html, copies to build folder
+      template: './src/index.html',
+      favicon: './src/favicon.ico'
     })
   ]
 };
