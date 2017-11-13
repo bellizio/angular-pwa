@@ -16,10 +16,11 @@ An Angular PWA starter kit with [Workbox](https://developers.google.com/web/tool
 
 This is an Angular PWA starter kit based on the official [Angular Webpack guide](https://angular.io/docs/ts/latest/guide/webpack.html). It includes everything detailed in the guide with a few modifications in order to incorporate the following:
 
-* [Hot Module Replacement](https://webpack.github.io/docs/hot-module-replacement.html) (for development)
-* [Ahead-of-Time Compilation](https://angular.io/docs/ts/latest/cookbook/aot-compiler.html) (for production)
+* [Hot Module Replacement](https://webpack.js.org/concepts/hot-module-replacement/) (for development)
+* [Ahead-of-Time Compilation](https://angular.io/guide/aot-compiler) (for production)
 * [Service Worker via Workbox](https://developers.google.com/web/tools/workbox/) (for production)
-* Sass
+* [PWA Manifest via webpack-pwa-manifest](https://github.com/arthurbergmz/webpack-pwa-manifest)
+* [Sass](http://sass-lang.com/)
 
 ## Scripts
 
