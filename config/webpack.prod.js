@@ -66,7 +66,7 @@ module.exports = webpackMerge(commonConfig, {
     }),
     new WorkboxPlugin({
       globDirectory: helpers.root('dist'),
-      globPatterns: ['**/*.{html,js,css,jpg,jpeg,png}'],
+      globPatterns: ['**/*.{html,js,css,jpg,jpeg,png,json}'],
       swDest: helpers.root('dist', 'sw.js'),
       clientsClaim: true,
       skipWaiting: true,
