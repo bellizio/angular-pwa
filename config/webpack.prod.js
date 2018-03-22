@@ -8,7 +8,7 @@ var helpers = require('./helpers');
 var WorkboxPlugin = require('workbox-webpack-plugin');
 var WebpackPwaManifest = require('webpack-pwa-manifest');
 
-const ENV = process.env.NODE_ENV = process.env.ENV = 'production';
+const ENV = (process.env.NODE_ENV = process.env.ENV = 'production');
 
 module.exports = webpackMerge(commonConfig, {
   output: {
@@ -30,10 +30,7 @@ module.exports = webpackMerge(commonConfig, {
         include: helpers.root('src', 'assets', 'css'),
         use: ExtractTextPlugin.extract({
           fallback: 'style-loader',
-          use: [
-            'css-loader',
-            'sass-loader'
-          ]
+          use: ['css-loader', 'sass-loader']
         })
       }
     ]
@@ -41,7 +38,8 @@ module.exports = webpackMerge(commonConfig, {
 
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ // https://github.com/angular/angular/issues/10618
+    new webpack.optimize.UglifyJsPlugin({
+      // https://github.com/angular/angular/issues/10618
       mangle: {
         keep_fnames: true
       }
@@ -56,7 +54,7 @@ module.exports = webpackMerge(commonConfig, {
     new ExtractTextPlugin('assets/css/[name].[hash].css'),
     new webpack.DefinePlugin({
       'process.env': {
-        'ENV': JSON.stringify(ENV)
+        ENV: JSON.stringify(ENV)
       }
     }),
     new ngToolsWebpack.AngularCompilerPlugin({
@@ -64,12 +62,12 @@ module.exports = webpackMerge(commonConfig, {
       entryModule: helpers.root('src', 'app', 'app.module#AppModule'),
       mainPath: helpers.root('src', 'main.ts')
     }),
-    new WorkboxPlugin({
-      globDirectory: helpers.root('dist'),
+    new WorkboxPlugin.GenerateSW({
+      globDirectory: './dist',
       globPatterns: ['**/*.{html,js,css,jpg,jpeg,png,json}'],
-      swDest: helpers.root('dist', 'sw.js'),
+      swDest: 'sw.js',
       clientsClaim: true,
-      skipWaiting: true,
+      skipWaiting: true
     }),
     new WebpackPwaManifest({
       name: 'Angular PWA',
